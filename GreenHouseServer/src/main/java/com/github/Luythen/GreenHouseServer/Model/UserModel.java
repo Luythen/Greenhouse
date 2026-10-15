@@ -1,10 +1,16 @@
 package com.github.Luythen.GreenHouseServer.Model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Document
-public class UserModel {
+public class UserModel implements UserDetails {
     @Id 
     private String id;
     
@@ -13,6 +19,9 @@ public class UserModel {
 
     private String email;
     private String password;
+
+    private String role;
+    private Boolean paid;
 
     private String greenHouseId;
 
@@ -60,5 +69,35 @@ public class UserModel {
         this.greenHouseId = greenHouseId;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public Boolean getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Boolean paid) {
+        this.paid = paid;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("GH_" + getRole()));
+
+        return authorities;
+    }
+
+    /* This will remain unsupported forever, cannot remove */
+    @Override
+    public String getUsername() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+    }
     
 }
