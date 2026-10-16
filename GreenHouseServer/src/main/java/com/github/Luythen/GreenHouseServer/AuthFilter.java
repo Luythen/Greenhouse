@@ -31,16 +31,18 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        String accessToken = request.getHeader("Authorization").split("Bearer ")[1];
+        if (request.getHeader("Authorization") != null) {
+            String accessToken = request.getHeader("Authorization").split("Bearer ")[1];
 
-        if (accessToken != null) {
-            try {
-                UserModel userModel = (UserModel) userDetailServiceImpl.loadUserByUsername(jwtService.getClaims(accessToken, "accessToken").getSubject());
-                if (!jwtService.isTokenExpired(accessToken, "accessToken")) {
-                    Authentication authentication = new UsernamePasswordAuthenticationToken(userModel, null, userModel.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authentication);
-                }
-            } catch (Exception e) {}
+            if (accessToken != null) {
+                try {
+                    UserModel userModel = (UserModel) userDetailServiceImpl.loadUserByUsername(jwtService.getClaims(accessToken, "accessToken").getSubject());
+                    if (!jwtService.isTokenExpired(accessToken, "accessToken")) {
+                        Authentication authentication = new UsernamePasswordAuthenticationToken(userModel, null, userModel.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                    }
+                } catch (Exception e) {}
+            }
         }
 
         filterChain.doFilter(request, response);
