@@ -12,16 +12,14 @@ public class PlantModel {
     private String id;
     private String plantType;
     private Instant plantedAt;
+    private Instant RemovedAt;
+    private Boolean active;
     
     @Indexed
     private String plantCrateId;
 
     public String getId() {
         return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getPlantType() {
@@ -46,6 +44,22 @@ public class PlantModel {
 
     public void setPlantedAt(Instant plantedAt) {
         this.plantedAt = plantedAt;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public Instant getRemovedAt() {
+        return RemovedAt;
+    }
+
+    public void setRemovedAt(Instant removedAt) {
+        RemovedAt = removedAt;
     }
     
 }
