@@ -9,6 +9,7 @@ public class PlantCrateModel {
     @Id 
     private String id;
     private String label;
+    private String moistureSensorConnectionId;
 
     @Indexed
     private String greenHouseId;
@@ -33,4 +34,12 @@ public class PlantCrateModel {
         this.greenHouseId = greenHouseId;
     }
 
+    public String getMoistureSensorConnectionId() {
+        return moistureSensorConnectionId;
+    }
+
+    public void setMoistureSensorConnectionId(String moistureSensorConnectionId) {
+        this.moistureSensorConnectionId = moistureSensorConnectionId;
+    }
+    
 }
