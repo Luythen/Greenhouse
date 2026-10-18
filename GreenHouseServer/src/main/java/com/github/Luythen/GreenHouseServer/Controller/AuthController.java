@@ -1,5 +1,6 @@
 package com.github.Luythen.GreenHouseServer.Controller;
 
+import com.github.Luythen.GreenHouseServer.Service.GreenHouseSerivce;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import com.github.Luythen.GreenHouseServer.Dto.AuthDto;
 import com.github.Luythen.GreenHouseServer.Dto.LoginDto;
 import com.github.Luythen.GreenHouseServer.Dto.RegisterDto;
 import com.github.Luythen.GreenHouseServer.Dto.ResponseDto;
+import com.github.Luythen.GreenHouseServer.Model.UserModel;
 import com.github.Luythen.GreenHouseServer.Service.AuthService;
 
 import jakarta.servlet.http.Cookie;
@@ -20,10 +22,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @RequestMapping("/auth")
 public class AuthController {
 
+    private final GreenHouseSerivce greenHouseSerivce;
     private final AuthService authService;
 
-    public AuthController (AuthService authService) {
+    public AuthController (AuthService authService, GreenHouseSerivce greenHouseSerivce) {
         this.authService = authService;
+        this.greenHouseSerivce = greenHouseSerivce;
     }
 
     @PostMapping("/login")
@@ -50,7 +54,8 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> register (@RequestBody RegisterDto registerDto) {
         try {
-            authService.register(registerDto);
+            UserModel user = authService.register(registerDto);
+            greenHouseSerivce.createNewGreenHouse(user.getId(), user.getFirstName());
 
             return ResponseEntity.ok().body(new ResponseDto(200, "Registeration successfull"));
         } catch (Exception e) {
