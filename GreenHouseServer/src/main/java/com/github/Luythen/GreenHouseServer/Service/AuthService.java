@@ -30,7 +30,7 @@ public class AuthService {
         return new AuthDto(refreshToken, new LoginResponseDto(accessToken, userModel.getFirstName(), userModel.getLastName(), userModel.getRole()));
     }
 
-    public void register (RegisterDto registerDto) throws Exception {
+    public UserModel register (RegisterDto registerDto) throws Exception {
         if (registerDto.email().isEmpty() || registerDto.firstName().isEmpty() || registerDto.lastName().isEmpty() || registerDto.password().isEmpty()) throw new Exception("A field is empty");
         try {
             UserModel userModel = new UserModel();
@@ -43,6 +43,8 @@ public class AuthService {
             userModel.setRole("User");
 
             userRepository.insert(userModel);
+
+            return userModel;
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }
