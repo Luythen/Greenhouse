@@ -2,6 +2,8 @@ package com.github.Luythen.GreenHouseServer.Controller;
 
 import com.github.Luythen.GreenHouseServer.Service.PlantCrateService;
 
+import java.util.ArrayList;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,8 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.github.Luythen.GreenHouseServer.Dto.GreenHouseCrateDto;
 import com.github.Luythen.GreenHouseServer.Dto.PlantCrateDto;
 import com.github.Luythen.GreenHouseServer.Dto.ResponseDto;
+import com.github.Luythen.GreenHouseServer.Model.PlantCrateModel;
+import com.github.Luythen.GreenHouseServer.Model.PlantModel;
 import com.github.Luythen.GreenHouseServer.Model.UserModel;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -31,7 +36,8 @@ public class PlantCrateController {
     @PostMapping("/add")
     public ResponseEntity<?> addPlantCrate (@AuthenticationPrincipal UserModel userModel, @RequestBody PlantCrateDto plantCrateDto) {
         try {
-            return ResponseEntity.ok(plantCrateService.addNewPlantCrate(userModel.getId(), plantCrateDto.label(), plantCrateDto.sensorId()));
+            PlantCrateModel plantCrateModel = plantCrateService.addNewPlantCrate(userModel.getId(), plantCrateDto.label(), plantCrateDto.sensorId());
+            return ResponseEntity.ok().body(new GreenHouseCrateDto(plantCrateModel.getId(), plantCrateModel.getLabel(),plantCrateModel.getMoistureSensorConnectionId(), new ArrayList<PlantModel>()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
         }
