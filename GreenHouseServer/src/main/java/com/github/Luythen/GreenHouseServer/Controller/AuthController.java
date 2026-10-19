@@ -2,6 +2,7 @@ package com.github.Luythen.GreenHouseServer.Controller;
 
 import com.github.Luythen.GreenHouseServer.Service.GreenHouseSerivce;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class AuthController {
             Cookie cookie = new Cookie("RefreshToken", authDto.refreshToken());
             cookie.setMaxAge(432000);
             cookie.setSecure(true);
-            cookie.setPath("/api/auth/refresh");
+            cookie.setPath("/auth/refresh");
             cookie.setHttpOnly(true);
             cookie.setDomain(request.getServerName());
             cookie.setAttribute("SameSite", "Strict");
@@ -58,6 +59,15 @@ public class AuthController {
             greenHouseSerivce.createNewGreenHouse(user.getId(), user.getFirstName());
 
             return ResponseEntity.ok().body(new ResponseDto(200, "Registeration successfull"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
+        }
+    }
+    
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh (@CookieValue("RefreshToken") String refreshToken) {
+        try {
+            return ResponseEntity.ok(authService.refresh(refreshToken));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
         }
