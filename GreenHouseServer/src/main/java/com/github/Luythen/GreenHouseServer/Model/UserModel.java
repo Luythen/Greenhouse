@@ -96,11 +96,9 @@ public class UserModel implements UserDetails {
         return authorities;
     }
 
-    /* This will remain unsupported forever, cannot remove */
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+        return getEmail();
     }
     
 }
