@@ -4,4 +4,4 @@ import java.util.List;
 
 import com.github.Luythen.GreenHouseServer.Model.PlantModel;
 
-public record CrateDto(String id, String label, String moistureSensorConnectionId, List<PlantModel> plants) {}
+public record GreenHouseCrateDto(String id, String label, String moistureSensorConnectionId, List<PlantModel> plants) {}

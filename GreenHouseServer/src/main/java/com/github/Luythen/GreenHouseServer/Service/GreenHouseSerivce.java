@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.github.Luythen.GreenHouseServer.Dto.CrateDto;
+import com.github.Luythen.GreenHouseServer.Dto.GreenHouseCrateDto;
 import com.github.Luythen.GreenHouseServer.Dto.GreenHouseDto;
 import com.github.Luythen.GreenHouseServer.Model.GreenHouseModel;
 import com.github.Luythen.GreenHouseServer.Model.PlantCrateModel;
@@ -67,8 +67,8 @@ public class GreenHouseSerivce {
         }
 
         /* map through all of the plantCrates and in order to create the crateDto with relevant information and also any plants that is connected to the crate */
-        List<CrateDto> crates = plantCrateModels.stream().map(pcm -> 
-            new CrateDto(pcm.getId(), 
+        List<GreenHouseCrateDto> crates = plantCrateModels.stream().map(pcm -> 
+            new GreenHouseCrateDto(pcm.getId(), 
                         pcm.getLabel(), 
                         pcm.getMoistureSensorConnectionId(), 
                         plants.getOrDefault(pcm.getId(), List.of())))
