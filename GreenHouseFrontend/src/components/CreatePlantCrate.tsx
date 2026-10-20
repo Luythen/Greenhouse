@@ -27,7 +27,7 @@ export const CreatePlantCrate = ({ accessToken, updateCrates }: { accessToken: s
     return (
         <div>
             <button className="theme-primary btn-subtle rounded-0" type="button" data-bs-toggle="collapse" data-bs-target="#crateCollapse" aria-expanded="false" aria-controls="crateCollapse">Skapa ny låda</button>
-            <div className="collapse" id="crateCollapse">
+            <div className="collapse" id="crateCollapse" style={{paddingTop: "10px"}}>
                 <div className="card card-body">
                     <div className="form-field">
                         <label>Namn</label>
