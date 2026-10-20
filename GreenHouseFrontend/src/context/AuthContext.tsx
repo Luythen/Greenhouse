@@ -29,8 +29,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             if (res.ok) {
                 const data = await res.json() as LoginInterface;
                 setAccessToken(data.accessToken);
-                setFirstName(data.accessToken);
-                setLastName(data.accessToken);
+                setFirstName(data.firstName);
+                setLastName(data.lastName);
             }
         } finally {
             setLoading(false);
