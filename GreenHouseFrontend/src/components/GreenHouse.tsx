@@ -46,14 +46,20 @@ export const GreenHouse = () => {
         setCrates(exits ? newCrateList : [...crates, crate]);
     }, [crates])
 
+    const removeCrate = useCallback((crate: Crate) => {
+        const newCrateList = crates.filter((c) => c.id !== crate.id)
+
+        setCrates(newCrateList);
+    }, [crates])
+
     return (
         <div className="container">
             { loading ? <h1>Loading</h1> :
             <div>
                 <h1 className="text-center">{ greenHouseName }</h1>
                 <CreatePlantCrate accessToken={accessToken!} updateCrates={updateCrates} />
-                <div className="row">
-                    { crates.length < 0 ? <div>Inga lådor</div> : crates.map(c => (<PlantCrate crate={c} />)) }
+                <div className="row" style={{paddingTop: "20px"}}>
+                    { crates.length < 0 ? <div>Inga lådor</div> : crates.map(c => (<PlantCrate accessToken={accessToken!} removeCrate={removeCrate} key={c.id} crate={c} />)) }
                 </div>
             </div>}
         </div>
