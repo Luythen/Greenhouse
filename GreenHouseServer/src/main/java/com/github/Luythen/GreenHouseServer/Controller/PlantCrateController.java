@@ -55,9 +55,9 @@ public class PlantCrateController {
     }
     
     @PutMapping("/edit/{id}")
-    public ResponseEntity<?> updatePlantCrate (@AuthenticationPrincipal UserModel userModel, @PathVariable String plantCrateId, @RequestBody PlantCrateDto pCrateDto) {
+    public ResponseEntity<?> updatePlantCrate (@AuthenticationPrincipal UserModel userModel, @PathVariable String id, @RequestBody PlantCrateDto pCrateDto) {
         try {
-            return ResponseEntity.ok(plantCrateService.updatePlantCrate(pCrateDto, userModel.getId(), plantCrateId));
+            return ResponseEntity.ok(plantCrateService.updatePlantCrate(pCrateDto, userModel.getId(), id));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
         }
