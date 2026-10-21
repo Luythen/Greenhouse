@@ -59,7 +59,7 @@ export const GreenHouse = () => {
                 <h1 className="text-center">{ greenHouseName }</h1>
                 <CreatePlantCrate accessToken={accessToken!} updateCrates={updateCrates} />
                 <div className="row" style={{paddingTop: "20px"}}>
-                    { crates.length < 0 ? <div>Inga lådor</div> : crates.map(c => (<PlantCrate accessToken={accessToken!} removeCrate={removeCrate} key={c.id} crate={c} />)) }
+                    { crates.length < 0 ? <div>Inga lådor</div> : crates.map(c => (<PlantCrate accessToken={accessToken!} updateCrate={updateCrates} removeCrate={removeCrate} key={c.id} crate={c} />)) }
                 </div>
             </div>}
         </div>
