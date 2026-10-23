@@ -8,10 +8,12 @@ export const Login = () => {
     const [loading, setLoading] = useState<boolean>(false);
 
     const { login } = useAuth();
+    
+    const api = import.meta.env.VITE_API_URL ?? "";
 
     const handleLogin = async() => {
         setLoading(true);
-        const res = await fetch("http://localhost:5050/auth/login", {
+        const res = await fetch(api + "/auth/login", {
             method: "POST",
             credentials: "include",
             headers: {
