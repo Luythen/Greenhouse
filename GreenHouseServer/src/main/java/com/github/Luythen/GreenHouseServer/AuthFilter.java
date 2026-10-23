@@ -1,9 +1,12 @@
 package com.github.Luythen.GreenHouseServer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,7 +34,7 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        if (request.getHeader("Authorization") != null) {
+        if (request.getHeader("Authorization") != null && request.getHeader("Authorization").startsWith("Bearer")) {
             String accessToken = request.getHeader("Authorization").split("Bearer ")[1];
 
             if (accessToken != null) {
@@ -42,6 +45,17 @@ public class AuthFilter extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(authentication);
                     }
                 } catch (Exception e) {}
+            }
+        }
+
+        if (request.getHeader("X-API-KEY") != null) {
+            String apiKey = request.getHeader("X-API-KEY");
+            if (!jwtService.isTokenExpired(apiKey, "accessToken")) {
+                ArrayList<GrantedAuthority> authorities = new ArrayList<>();
+                authorities.add(new SimpleGrantedAuthority("GH_Api"));
+
+                Authentication authentication = new ApiKey(apiKey, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
 
