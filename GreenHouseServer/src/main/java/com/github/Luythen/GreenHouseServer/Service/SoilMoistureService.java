@@ -44,7 +44,6 @@ public class SoilMoistureService {
 
             return soilMoistureRepository.insert(sList);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
     }
