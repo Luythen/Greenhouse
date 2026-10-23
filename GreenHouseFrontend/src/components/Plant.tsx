@@ -6,8 +6,10 @@ export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: strin
     const [plantHistory, setPlantHistory] = useState<PlantInterface[]>(crate.plants.filter((p) => !p.active ))
     const [activePlant, setActivePlant] = useState<PlantInterface | null>(crate.plants.filter((p) => p.active)[0] ?? null)
 
+    const api = import.meta.env.VITE_API_URL ?? "";
+
     const handlePlant = async (plantType: string) => {
-        const res = await fetch("http://localhost:5050/plant/vegetable", {
+        const res = await fetch(api + "/plant/vegetable", {
             method: "POST",
             credentials: "include",
             headers: {
@@ -24,7 +26,7 @@ export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: strin
     }
 
     const handleRemovePlant = async () => {
-        const res = await fetch("http://localhost:5050/plant/unplant/" + activePlant?.id, {
+        const res = await fetch(api + "/plant/unplant/" + activePlant?.id, {
             method: "PATCH",
             credentials: "include",
             headers: {

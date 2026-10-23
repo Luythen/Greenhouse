@@ -1,15 +1,18 @@
 import { useState } from "react";
 import type { Crate } from "../interface/GreenHouseInterface";
 import { Plant } from "./Plant";
+import type { Soil } from "../interface/WebSocketInterface";
 
-export const PlantCrate = ({ crate, removeCrate, updateCrate,accessToken }: { crate: Crate, removeCrate: (removeCrate: Crate) => void, updateCrate: (uCrate: Crate) => void, accessToken: string }) => {
+export const PlantCrate = ({ crate, removeCrate, updateCrate, accessToken, soilData }: { crate: Crate, removeCrate: (removeCrate: Crate) => void, updateCrate: (uCrate: Crate) => void, accessToken: string, soilData: Soil | null }) => {
     const [edit, setEdit] = useState<boolean>(false);
 
     const [name, setName] = useState<string | null>(null);
     const [sensor, setSensor] = useState<string | null>(null);
 
+    const api = import.meta.env.VITE_API_URL ?? "";
+
     const handleDelete = async () => {
-        const res = await fetch("http://localhost:5050/plantcrate/remove/" + crate.id, {
+        const res = await fetch(api + "/plantcrate/remove/" + crate.id, {
             method: "POST",
             credentials: "include",
             headers: {
@@ -24,7 +27,7 @@ export const PlantCrate = ({ crate, removeCrate, updateCrate,accessToken }: { cr
 
     const handleEdit = async () => {
         if (name !== null || sensor !== null) {
-            const res = await fetch("http://localhost:5050/plantcrate/edit/" + crate.id, {
+            const res = await fetch(api + "/plantcrate/edit/" + crate.id, {
                 method: "PUT",
                 credentials: "include",
                 headers: {
@@ -60,7 +63,7 @@ export const PlantCrate = ({ crate, removeCrate, updateCrate,accessToken }: { cr
                     { edit ? <div className="form-field">
                         <label>Sensor</label>
                         <input className="form-control" type="text" placeholder={crate.moistureSensorConnectionId} onChange={(e) => setSensor(e.target.value)} />
-                    </div> : <>{ crate.moistureSensorConnectionId ?? "Ingen sensor ansluten" }</>}
+                    </div> : <>{ soilData !== null ? soilData.measurement : "Ingen sensor ansluten" }</>}
                 </div>
                 <div className="card-footer">
                     <button className="btn btn-icon theme-danger btn-subtle rounded-0" aria-label="Icon Only" onClick={handleDelete}>

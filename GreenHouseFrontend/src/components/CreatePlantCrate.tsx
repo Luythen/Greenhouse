@@ -6,9 +6,11 @@ export const CreatePlantCrate = ({ accessToken, updateCrates }: { accessToken: s
     const [label, setLabel] = useState<string | null>(null);
     const [sensor, setSensor] = useState<string | null>(null)
 
+    const api = import.meta.env.VITE_API_URL ?? "";
+
     const handleAddCrate = async () => {
         if (label === null) return;
-        const res = await fetch("http://localhost:5050/plantcrate/add", {
+        const res = await fetch(api + "/plantcrate/add", {
             method: "POST",
             credentials: "include",
             body: JSON.stringify({ label, sensorId: sensor}),

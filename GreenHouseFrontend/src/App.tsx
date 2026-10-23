@@ -5,6 +5,7 @@ import { Register } from './components/Register'
 import { LoginRequired } from './components/LoginRequired'
 import { GreenHouse } from './components/GreenHouse'
 import { Navbar } from './components/Navbar'
+import { WebSocketProvider } from './context/WebSocketContext'
 
 function App() {
 
@@ -16,7 +17,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route element={<LoginRequired />}>
-              <Route path='/greenhouse' element={<GreenHouse />} />
+              <Route path='/greenhouse' element={<WebSocketProvider><GreenHouse /></WebSocketProvider>} />
             </Route>
         </Routes>
       </Navbar>

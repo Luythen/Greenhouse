@@ -6,11 +6,13 @@ export const Register = () => {
     const [lastName, setLastName] = useState<string |null>(null);
     const [email, setEmail] = useState<string |null>(null);
     const [password, setPassword] = useState<string |null>(null);
+
+    const api = import.meta.env.VITE_API_URL ?? "";
     
     const handleRegister = async () => {
         setLoading(true)
         try {
-            const res = await fetch("http://localhost:5050/auth/register", {
+            const res = await fetch(api + "/auth/register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

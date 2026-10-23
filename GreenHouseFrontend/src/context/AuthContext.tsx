@@ -20,9 +20,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [loading, setLoading] = useState<boolean>(true);
 
+    const api = import.meta.env.VITE_API_URL ?? "";
+
     useEffect(() => {(async () => {
         try {
-            const res = await fetch("http://localhost:5050/auth/refresh", {
+            const res = await fetch(api + "/auth/refresh", {
                 method: "POST",
                 credentials: "include"
             })
