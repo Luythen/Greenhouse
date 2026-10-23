@@ -33,6 +33,8 @@ public class SecurityConfig {
                 .requestMatchers("/plantcrate/**").hasAuthority("GH_User")
                 .requestMatchers("/plant/**").hasAuthority("GH_User")
                 .requestMatchers("/greenhouse/**").hasAuthority("GH_User")
+                .requestMatchers("/soil/**").hasAuthority("GH_Api")
+                .requestMatchers("/ws/**").permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
