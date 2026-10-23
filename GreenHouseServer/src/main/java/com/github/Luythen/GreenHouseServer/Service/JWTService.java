@@ -1,5 +1,6 @@
 package com.github.Luythen.GreenHouseServer.Service;
 
+import java.time.Duration;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,8 @@ public class JWTService {
     private static final long ACCESS_TOKEN_EXPIRATION_TIME = 1200000; // 20 min
     private static final long REFRESH_TOKEN_EXPIRATION_TIME = 432000000; // 5 days
 
+    private static final long API_KEY_TOKEN_EXPIRATION_TIME = Duration.ofDays(365).toMillis(); // 1 year
+
     public String generateRefreshToken (UserModel userModel) {
         return Jwts.builder()
             .subject(userModel.getEmail())
@@ -41,6 +44,17 @@ public class JWTService {
             .issuer(Issuer)
             .issuedAt(new Date(System.currentTimeMillis()))
             .expiration(new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRATION_TIME))
+            .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET_KEY.getBytes()))
+            .compact();
+    }
+
+    public String generateApiKey (String greenHouseId, String userId) {
+         return Jwts.builder()
+            .claim("GreenHouseId", greenHouseId)
+            .claim("OwnerId", userId)
+            .issuer(Issuer)
+            .issuedAt(new Date(System.currentTimeMillis()))
+            .expiration(new Date(System.currentTimeMillis() + API_KEY_TOKEN_EXPIRATION_TIME))
             .signWith(Keys.hmacShaKeyFor(ACCESS_TOKEN_SECRET_KEY.getBytes()))
             .compact();
     }
