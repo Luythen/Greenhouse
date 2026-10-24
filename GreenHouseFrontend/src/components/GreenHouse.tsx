@@ -44,8 +44,6 @@ export const GreenHouse = () => {
     useEffect(() => {
         if (!client) return;
 
-        console.log(greenHouseId)
-
         const sub = client.subscribe("/topic/soil/" + greenHouseId, (message) => {
             const parsed: Soil[] = JSON.parse(message.body);
             setSoilData(parsed);
