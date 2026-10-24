@@ -15,6 +15,9 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
                             <li className="nav-item">
                                 <a className="nav-link" href="/greenhouse">Växthus</a>
                             </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/settings">Inställningar</a>
+                            </li>
                             <li className="navbar-nav">
                                 <button type="button" className="theme-danger btn-subtle rounded-0">Logga ut</button>
                             </li>

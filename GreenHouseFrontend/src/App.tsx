@@ -6,6 +6,7 @@ import { LoginRequired } from './components/LoginRequired'
 import { GreenHouse } from './components/GreenHouse'
 import { Navbar } from './components/Navbar'
 import { WebSocketProvider } from './context/WebSocketContext'
+import { Settings } from './components/Settings'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
             <Route path='/register' element={<Register />} />
             <Route element={<LoginRequired />}>
               <Route path='/greenhouse' element={<WebSocketProvider><GreenHouse /></WebSocketProvider>} />
+              <Route path='/settings' element={<Settings />} />
             </Route>
         </Routes>
       </Navbar>
