@@ -54,7 +54,7 @@ public class AuthFilter extends OncePerRequestFilter {
                 ArrayList<GrantedAuthority> authorities = new ArrayList<>();
                 authorities.add(new SimpleGrantedAuthority("GH_Api"));
 
-                Authentication authentication = new ApiKey(apiKey, authorities);
+                Authentication authentication = new ApiKey(jwtService.getClaims(apiKey, "accessToken").get("GreenHouseId").toString(), authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
