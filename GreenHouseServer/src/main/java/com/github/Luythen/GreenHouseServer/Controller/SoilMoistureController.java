@@ -35,7 +35,6 @@ public class SoilMoistureController {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String id = securityContext.getAuthentication().getPrincipal().toString();
         try {
-            System.out.println(measurementDto.get(0).sensorId());
             List<SoilMoistureModel> sList = soilMoistureService.addNewSoilMoistureMeasurement(id, measurementDto);
             simpMessagingTemplate.convertAndSend("/topic/soil/" + id , sList);
 
