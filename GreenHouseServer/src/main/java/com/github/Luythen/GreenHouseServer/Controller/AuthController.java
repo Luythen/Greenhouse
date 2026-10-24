@@ -42,7 +42,7 @@ public class AuthController {
             cookie.setPath("/auth/refresh");
             cookie.setHttpOnly(true);
             cookie.setDomain(request.getServerName());
-            cookie.setAttribute("SameSite", "Strict");
+            cookie.setAttribute("SameSite", "None");
 
             response.addCookie(cookie);
 
