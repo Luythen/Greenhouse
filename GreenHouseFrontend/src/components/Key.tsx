@@ -33,11 +33,11 @@ export const Key = () => {
                     Kom ihåg
                 </div>
                 <div className="card-body">
-                    <p className="card-text">När du generare the ny api nyckel så <b>måste du</b> spara nyckeln för du kommer ej få tillbaka nyckeln utom då måste du generara en ny nyckel</p>
+                    <p className="card-text">När du skapar en ny api nyckel så <b>måste du</b> spara nyckeln för du kommer ej få tillbaka nyckeln utom då måste du skapa en ny nyckel igen!</p>
                 </div>
             </div>
             <textarea className="form-control" rows={4} value={key} />
-            <button className="theme-primary btn-subtle rounded-0" onClick={handleGenerateKey}>Generara</button>
+            <button className="theme-primary btn-subtle rounded-0" onClick={handleGenerateKey}>Skapa</button>
         </div>
     )
 }

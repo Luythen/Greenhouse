@@ -63,7 +63,7 @@ export const PlantCrate = ({ crate, removeCrate, updateCrate, accessToken, soilD
                     { edit ? <div className="form-field">
                         <label>Sensor</label>
                         <input className="form-control" type="text" placeholder={crate.moistureSensorConnectionId} onChange={(e) => setSensor(e.target.value)} />
-                    </div> : <>{ soilData !== null ? soilData.measurement : "Ingen sensor ansluten" }</>}
+                    </div> : <>{ soilData !== null ? <button className="theme-primary btn-subtle rounded-0">{ soilData.measurement }%</button> : "Ingen sensor ansluten" }</>}
                 </div>
                 <div className="card-footer">
                     <button className="btn btn-icon theme-danger btn-subtle rounded-0" aria-label="Icon Only" onClick={handleDelete}>
