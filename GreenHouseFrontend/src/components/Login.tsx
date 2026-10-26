@@ -33,8 +33,10 @@ export const Login = () => {
 
     return (
         <div className="container">
-            { loading ? <div>Laddar</div> : 
-            <div className="card">
+            { loading ? <div className="spinner-border" style={{width: "3rem", height: "3rem"}} role="status">
+                <span className="visually-hidden">Loading…</span>
+            </div> : 
+            <div className="card" style={{ marginLeft: "11.5rem", marginRight: "11.5rem", marginTop: "2rem"}}>
                 <div className="card-body">
                     <div className="form-field">
                         <label>Email</label>
@@ -45,6 +47,7 @@ export const Login = () => {
                         <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <button className="theme-primary btn-subtle rounded-0" onClick={handleLogin}>Logga in</button>
+                    <a className="theme-primary btn-text rounded-0" href="/register">Har du inget konto? Registera här!</a>
                 </div>
             </div>}
         </div>
