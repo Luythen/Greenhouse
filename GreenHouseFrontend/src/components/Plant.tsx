@@ -40,8 +40,8 @@ export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: strin
         }
     }
 
-    const handlePlantStatus = () => {
-        return plantHistory.filter((ph) => (new Date(ph.plantedAt).getFullYear() + 4) === new Date(Date.now()).getFullYear()).length === 0
+    const handlePlantStatus = (plant: PlantType) => {
+        return plantHistory.some((ph) => ph.plantType === plant.PlantType) && plantHistory.filter((ph) => (new Date(ph.plantedAt).getFullYear() + 4) <= new Date(Date.now()).getFullYear()).length === 0
     }
 
     const plantAgainDate = (plant: PlantType) => {
@@ -56,7 +56,7 @@ export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: strin
             <>
                 <button type="button" className="theme-secondary btn-subtle btn-lg rounded-0" data-bs-toggle="menu" aria-expanded="false">Plantera</button>
                 <div className="menu">
-                    { PlantTypes.map((pt) => ( <a className={handlePlantStatus() ? "menu-item disabled" : "menu-item"} onClick={() => handlePlant(pt.PlantType)} key={pt.PlantType}><div className="menu-item-content">
+                    { PlantTypes.map((pt) => ( <a className={handlePlantStatus(pt) ? "menu-item disabled" : "menu-item"} onClick={() => handlePlant(pt.PlantType)} key={pt.PlantType}><div className="menu-item-content">
                        {pt.PlantName}
                         <small className="menu-item-description">{ plantAgainDate(pt) ?? "" }</small>
                     </div></a>)) }
