@@ -1,6 +1,8 @@
+import { useAuth } from "../context/AuthContext"
 import { Key } from "./Key"
 
 export const Settings = () => {
+    const { firstName, lastName } = useAuth();
     return (
         <div className="container">
             <div className="card" style={{ marginLeft: "11.5rem", marginRight: "11.5rem", marginTop: "2.5rem", height: "50%"}}>
@@ -15,7 +17,8 @@ export const Settings = () => {
                         <div className="col-8">
                             <div className="tab-content" id="list-tabContent">
                                 <div className="tab-pane show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                                    <p>Hem</p>
+                                    <input value={firstName!} />
+                                    <input value={lastName!} />
                                 </div>
                                 <div className="tab-pane" id="list-key" role="tabpanel" aria-labelledby="list-key-list">
                                     <Key />
