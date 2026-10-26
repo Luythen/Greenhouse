@@ -72,6 +72,22 @@ public class AuthController {
             return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
         }
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ResponseDto> logout (HttpServletResponse response, HttpServletRequest request) {
+        Cookie cookie = new Cookie("RefreshToken", "LOL");
+        cookie.setMaxAge(10);
+        cookie.setSecure(true);
+        cookie.setPath("/auth/refresh");
+        cookie.setHttpOnly(true);
+        cookie.setDomain(request.getServerName());
+        cookie.setAttribute("SameSite", "None");
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(new ResponseDto(200,"Logout"));
+    }
+    
     
 
 }
