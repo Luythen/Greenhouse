@@ -18,3 +18,8 @@ export interface PlantInterface {
     removedAt: Date,
     active: boolean
 }
+
+export interface PlantType {
+    PlantType: string,
+    PlantName: string
+}

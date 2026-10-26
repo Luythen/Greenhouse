@@ -1,7 +1,25 @@
 import { useAuth } from "../context/AuthContext"
 
 export const Navbar = ({ children }: { children: React.ReactNode }) => {
-    const { accessToken } = useAuth()
+    const { accessToken, logout } = useAuth()
+
+    const api = import.meta.env.VITE_API_URL ?? "";
+
+    const handleLogout = async () => {
+        const res = await await fetch(api + "/auth/logout", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Authorization": "Bearer " + accessToken,
+                "Content-Type": "application/json"
+            }
+        })
+
+        if (res.ok) {
+            logout();
+            window.location.href = "/login"
+        }
+    }
 
     return (
         <>
@@ -19,7 +37,7 @@ export const Navbar = ({ children }: { children: React.ReactNode }) => {
                                 <a className="nav-link" href="/settings">Inställningar</a>
                             </li>
                             <li className="navbar-nav">
-                                <button type="button" className="theme-danger btn-subtle rounded-0">Logga ut</button>
+                                <button type="button" className="theme-danger btn-subtle rounded-0" onClick={handleLogout}>Logga ut</button>
                             </li>
                         </ul> : 
                         <ul className="navbar-nav">

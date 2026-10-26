@@ -38,7 +38,7 @@ export const Register = () => {
     return (
         <div className="container">
             { loading ? <div>loading</div> : 
-            <div className="card">
+            <div className="card" style={{marginLeft: "11.5rem", marginRight: "11.5rem", marginTop: "2rem"}}>
                 <div className="card-body">
                     <div className="form-field">
                         <label>Förnamn</label>
@@ -57,6 +57,7 @@ export const Register = () => {
                         <input type="password" className="form-control" onChange={(e) => setPassword(e.target.value)} />
                     </div>
                     <button className="theme-primary btn-subtle rounded-0" onClick={handleRegister}>Register</button>
+                    <a className="theme-primary btn-text rounded-0" href="/login">Har redan ett konto? Logga in här!</a>
                 </div>
             </div>}
         </div>

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import type { Crate, PlantInterface } from "../interface/GreenHouseInterface"
+import type { Crate, PlantInterface, PlantType } from "../interface/GreenHouseInterface"
 import { PlantTypes } from "../PlantType"
 
 export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: string }) => {
@@ -40,13 +40,26 @@ export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: strin
         }
     }
 
+    const handlePlantStatus = () => {
+        return plantHistory.filter((ph) => (new Date(ph.plantedAt).getFullYear() + 4) === new Date(Date.now()).getFullYear()).length === 0
+    }
+
+    const plantAgainDate = (plant: PlantType) => {
+        if (plantHistory.some((ph) => ph.plantType === plant.PlantType)) {
+            return new Date(plantHistory.filter(((ph) => ph.plantType === plant.PlantType))[0]?.plantedAt).getFullYear() + 4;
+        }
+    }
+
     return (
         <div className="d-grid gap-2">
             { activePlant == null ? 
             <>
                 <button type="button" className="theme-secondary btn-subtle btn-lg rounded-0" data-bs-toggle="menu" aria-expanded="false">Plantera</button>
                 <div className="menu">
-                    { PlantTypes.map((pt) => (<a className={plantHistory.some((ph) => ph.plantType === pt.PlantType) ? "menu-item disabled" : "menu-item"} onClick={() => handlePlant(pt.PlantType)} key={pt.PlantType}>{pt.PlantName}</a>)) }
+                    { PlantTypes.map((pt) => ( <a className={handlePlantStatus() ? "menu-item disabled" : "menu-item"} onClick={() => handlePlant(pt.PlantType)} key={pt.PlantType}><div className="menu-item-content">
+                       {pt.PlantName}
+                        <small className="menu-item-description">{ plantAgainDate(pt) ?? "" }</small>
+                    </div></a>)) }
                 </div>
             </> : 
             <>
