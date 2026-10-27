@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.github.Luythen.GreenHouseServer.Exceptions.FindByException;
+import com.github.Luythen.GreenHouseServer.Exceptions.PlantCrateHasActivePlantException;
 import com.github.Luythen.GreenHouseServer.Model.PlantCrateModel;
 import com.github.Luythen.GreenHouseServer.Model.PlantModel;
 
@@ -24,37 +26,28 @@ public class PlantService {
         this.plantCrateRepository = plantCrateRepository;
     }
 
-    public PlantModel plantVegetable (String crateId, String plantType) throws Exception {
-        PlantCrateModel plantCrateModel = plantCrateRepository.findById(crateId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
-        if (crateHasActivePlant(crateId)) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        try {
-            PlantModel plantModel = new PlantModel();
+    public PlantModel plantVegetable (String crateId, String plantType) {
+        PlantCrateModel plantCrateModel = plantCrateRepository.findById(crateId).orElseThrow(() -> new FindByException("Kunde inte hitta en växthus låda med den idn"));
+        if (crateHasActivePlant(crateId)) throw new PlantCrateHasActivePlantException("Lådan innehåller redan en växt");
 
-            plantModel.setActive(true);
-            plantModel.setPlantCrateId(plantCrateModel.getId());
-            plantModel.setPlantedAt(Instant.now());
-            plantModel.setPlantType(plantType);
+        PlantModel plantModel = new PlantModel();
 
-            plantRepository.insert(plantModel);
-            
-            return plantModel;
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        plantModel.setActive(true);
+        plantModel.setPlantCrateId(plantCrateModel.getId());
+        plantModel.setPlantedAt(Instant.now());
+        plantModel.setPlantType(plantType);
+
+        return plantRepository.insert(plantModel);
     }
 
-    public void unPlant (String plantId) throws Exception {
+    public void unPlant (String plantId) {
         PlantModel plantModel = plantRepository.findById(plantId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
         if (!plantModel.getActive()) throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
-        try {
-            plantModel.setActive(false);
-            plantModel.setRemovedAt(Instant.now());
+        plantModel.setActive(false);
+        plantModel.setRemovedAt(Instant.now());
 
-            plantRepository.save(plantModel);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        plantRepository.save(plantModel);
     }
 
     private boolean crateHasActivePlant (String crateId) {
