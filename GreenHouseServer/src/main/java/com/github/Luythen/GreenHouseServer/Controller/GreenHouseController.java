@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.Luythen.GreenHouseServer.Dto.GreenHouseDto;
-import com.github.Luythen.GreenHouseServer.Dto.ResponseDto;
 import com.github.Luythen.GreenHouseServer.Model.UserModel;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,12 +25,8 @@ public class GreenHouseController {
 
     @GetMapping("/dashboard")
     public ResponseEntity<?> greenHouseInfo (@AuthenticationPrincipal UserModel userModel) {
-        try {
-            GreenHouseDto greenHouseDto = greenHouseSerivce.getGreenHouseDashboard(userModel.getId());
-            return ResponseEntity.ok(greenHouseDto);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        GreenHouseDto greenHouseDto = greenHouseSerivce.getGreenHouseDashboard(userModel.getId());
+        return ResponseEntity.ok(greenHouseDto);
     }
     
 

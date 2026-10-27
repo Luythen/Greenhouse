@@ -2,14 +2,14 @@ package com.github.Luythen.GreenHouseServer.Service;
 
 import com.github.Luythen.GreenHouseServer.Dto.GreenHouseCrateDto;
 import com.github.Luythen.GreenHouseServer.Dto.PlantCrateDto;
+import com.github.Luythen.GreenHouseServer.Exceptions.FindByException;
+import com.github.Luythen.GreenHouseServer.Exceptions.NotFoundException;
 import com.github.Luythen.GreenHouseServer.Model.GreenHouseModel;
 import com.github.Luythen.GreenHouseServer.Model.PlantCrateModel;
 import com.github.Luythen.GreenHouseServer.Repository.PlantCrateRepository;
 import com.github.Luythen.GreenHouseServer.Repository.PlantRepository;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class PlantCrateService {
@@ -24,48 +24,36 @@ public class PlantCrateService {
         this.plantRepository = plantRepository;
     }
 
-    public PlantCrateModel addNewPlantCrate (String userId, String crateLabel, String SensorId) throws Exception {
-        try {
-            PlantCrateModel plantCrateModel = new PlantCrateModel();
-            GreenHouseModel greenHouseModel = greenHouseSerivce.findGreenHouseByOwnerId(userId);
+    public PlantCrateModel addNewPlantCrate (String userId, String crateLabel, String SensorId) {
+        PlantCrateModel plantCrateModel = new PlantCrateModel();
+        GreenHouseModel greenHouseModel = greenHouseSerivce.findGreenHouseByOwnerId(userId);
 
-            plantCrateModel.setGreenHouseId(greenHouseModel.getId());
-            plantCrateModel.setLabel(crateLabel);
-            plantCrateModel.setMoistureSensorConnectionId(SensorId);
+        plantCrateModel.setGreenHouseId(greenHouseModel.getId());
+        plantCrateModel.setLabel(crateLabel);
+        plantCrateModel.setMoistureSensorConnectionId(SensorId);
 
-            return plantCrateRepository.insert(plantCrateModel);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        return plantCrateRepository.insert(plantCrateModel);
     }
 
-    public void removePlantCrateById (String id, String userId) throws Exception {
-        try {
-            PlantCrateModel plantCrateModel = plantCrateRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            String greenHouseId = greenHouseSerivce.findGreenHouseByOwnerId(userId).getId();
-            if (!plantCrateModel.getGreenHouseId().equals(greenHouseId)) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    public void removePlantCrateById (String id, String userId) {
+        PlantCrateModel plantCrateModel = plantCrateRepository.findById(id).orElseThrow(() -> new FindByException("Kunde inte hitta någon låda med den idn"));
+        String greenHouseId = greenHouseSerivce.findGreenHouseByOwnerId(userId).getId();
+        if (!plantCrateModel.getGreenHouseId().equals(greenHouseId)) throw new NotFoundException("Lådan tillhör ej växthuset\"");
 
-            plantCrateRepository.delete(plantCrateModel);
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        plantCrateRepository.delete(plantCrateModel);
     }
 
-    public GreenHouseCrateDto updatePlantCrate (PlantCrateDto plantCrateDto, String userId, String id) throws Exception {
-        try {
-            PlantCrateModel plantCrateModel = plantCrateRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-            GreenHouseModel greenHouseModel = greenHouseSerivce.findGreenHouseByOwnerId(userId);
+    public GreenHouseCrateDto updatePlantCrate (PlantCrateDto plantCrateDto, String userId, String id) {
+        PlantCrateModel plantCrateModel = plantCrateRepository.findById(id).orElseThrow(() -> new FindByException("Kunde inte hitta någon låda med den idn"));
+        GreenHouseModel greenHouseModel = greenHouseSerivce.findGreenHouseByOwnerId(userId);
             
-            if (!plantCrateModel.getGreenHouseId().equals(greenHouseModel.getId())) throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (!plantCrateModel.getGreenHouseId().equals(greenHouseModel.getId())) throw new NotFoundException("Lådan tillhör ej växthuset");
 
-            plantCrateModel.setLabel(plantCrateDto.label());
-            plantCrateModel.setMoistureSensorConnectionId(plantCrateDto.sensorId());
-            plantCrateRepository.save(plantCrateModel);
+        plantCrateModel.setLabel(plantCrateDto.label());
+        plantCrateModel.setMoistureSensorConnectionId(plantCrateDto.sensorId());
+        plantCrateRepository.save(plantCrateModel);
 
-            return new GreenHouseCrateDto(plantCrateModel.getId(), plantCrateModel.getLabel(), plantCrateModel.getMoistureSensorConnectionId(), plantRepository.findByPlantCrateId(id));
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
-        }
+        return new GreenHouseCrateDto(plantCrateModel.getId(), plantCrateModel.getLabel(), plantCrateModel.getMoistureSensorConnectionId(), plantRepository.findByPlantCrateId(id));
 
     }
 

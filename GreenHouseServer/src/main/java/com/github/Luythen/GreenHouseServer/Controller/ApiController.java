@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.Luythen.GreenHouseServer.Dto.ApiKeyDto;
-import com.github.Luythen.GreenHouseServer.Dto.ResponseDto;
 import com.github.Luythen.GreenHouseServer.Model.GreenHouseModel;
 import com.github.Luythen.GreenHouseServer.Model.UserModel;
 import com.github.Luythen.GreenHouseServer.Service.GreenHouseSerivce;
@@ -29,15 +28,11 @@ public class ApiController {
 
     @PostMapping("/generate")
     public ResponseEntity<?> generateApiKey (@AuthenticationPrincipal UserModel userModel) {
-        try {
-            GreenHouseModel greenHouseModel = greenHouseSerivce.findGreenHouseByOwnerId(userModel.getId());
+        GreenHouseModel greenHouseModel = greenHouseSerivce.findGreenHouseByOwnerId(userModel.getId());
 
-            String apiKey = jwtService.generateApiKey(greenHouseModel.getId(), userModel.getId());
+        String apiKey = jwtService.generateApiKey(greenHouseModel.getId(), userModel.getId());
             
-            return ResponseEntity.ok(new ApiKeyDto(apiKey));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        return ResponseEntity.ok(new ApiKeyDto(apiKey));
     }
 
 }

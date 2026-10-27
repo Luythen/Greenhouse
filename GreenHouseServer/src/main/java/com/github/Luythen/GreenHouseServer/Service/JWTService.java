@@ -5,10 +5,13 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import com.github.Luythen.GreenHouseServer.Exceptions.InvalidFieldException;
 import com.github.Luythen.GreenHouseServer.Model.UserModel;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.Keys;
 
 @Service
@@ -60,8 +63,12 @@ public class JWTService {
     }
 
     public Claims getClaims (String token, String keyType) {
-        String key = keyType == "accessToken" ? ACCESS_TOKEN_SECRET_KEY : REFRESH_TOKEN_SECRET_KEY;
-        return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(key.getBytes())).build().parseSignedClaims(token).getPayload();
+        try {
+            String key = keyType == "accessToken" ? ACCESS_TOKEN_SECRET_KEY : REFRESH_TOKEN_SECRET_KEY;
+            return Jwts.parser().verifyWith(Keys.hmacShaKeyFor(key.getBytes())).build().parseSignedClaims(token).getPayload();
+        } catch (MalformedJwtException e) {
+            throw new InvalidFieldException("token är fel");
+        }
     }
 
     public boolean isTokenExpired (String token, String keyType) {
