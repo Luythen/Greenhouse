@@ -34,14 +34,10 @@ public class SoilMoistureController {
     public ResponseEntity<?> addSoilMeasurements (@RequestBody List<MeasurementDto> measurementDto) {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         String id = securityContext.getAuthentication().getPrincipal().toString();
-        try {
-            List<SoilMoistureModel> sList = soilMoistureService.addNewSoilMoistureMeasurement(id, measurementDto);
-            simpMessagingTemplate.convertAndSend("/topic/soil/" + id , sList);
+        List<SoilMoistureModel> sList = soilMoistureService.addNewSoilMoistureMeasurement(id, measurementDto);
+        simpMessagingTemplate.convertAndSend("/topic/soil/" + id , sList);
 
-            return ResponseEntity.ok(new ResponseDto(200, "Moist measurement have been registerd"));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        return ResponseEntity.ok(new ResponseDto(200, "Moist measurement have been registerd"));
     }
 
 }

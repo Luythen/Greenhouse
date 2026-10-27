@@ -4,18 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.github.Luythen.GreenHouseServer.Dto.GreenHouseCrateDto;
 import com.github.Luythen.GreenHouseServer.Dto.GreenHouseDto;
+import com.github.Luythen.GreenHouseServer.Exceptions.FindByException;
+import com.github.Luythen.GreenHouseServer.Exceptions.GreenHouseAlreadyExitsException;
 import com.github.Luythen.GreenHouseServer.Model.GreenHouseModel;
 import com.github.Luythen.GreenHouseServer.Model.PlantCrateModel;
 import com.github.Luythen.GreenHouseServer.Model.PlantModel;
 import com.github.Luythen.GreenHouseServer.Repository.GreenHouseRepository;
 import com.github.Luythen.GreenHouseServer.Repository.PlantCrateRepository;
 import com.github.Luythen.GreenHouseServer.Repository.PlantRepository;
+import com.mongodb.DuplicateKeyException;
 
 @Service 
 public class GreenHouseSerivce {
@@ -30,17 +31,16 @@ public class GreenHouseSerivce {
         this.plantRepository = plantRepository;
     }
 
-    public void createNewGreenHouse (String userId, String firstName) throws Exception {
+    public void createNewGreenHouse (String userId, String firstName) {
+        GreenHouseModel greenHouseModel = new GreenHouseModel();
+
+        greenHouseModel.setName(firstName + " GreenHouse");
+        greenHouseModel.setOwnerId(userId);
+        
         try {
-            GreenHouseModel greenHouseModel = new GreenHouseModel();
-
-            greenHouseModel.setName(firstName + " GreenHouse");
-            greenHouseModel.setOwnerId(userId);
-
             greenHouseRepository.insert(greenHouseModel);
-
-        } catch (Exception e) {
-            throw new Exception(e.getMessage());
+        } catch (DuplicateKeyException e) {
+            throw new GreenHouseAlreadyExitsException();
         }
     }
 
@@ -48,12 +48,12 @@ public class GreenHouseSerivce {
         return greenHouseRepository.findById(Id).isPresent();
     }
 
-    public GreenHouseModel findGreenHouseByOwnerId (String id) throws Exception {
-        return greenHouseRepository.findByOwnerId(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public GreenHouseModel findGreenHouseByOwnerId (String id) {
+        return greenHouseRepository.findByOwnerId(id).orElseThrow(() -> new FindByException("Kunden inte hitta ett växthus som tillhör användaren"));
     }
 
-    public GreenHouseDto getGreenHouseDashboard (String userId) throws Exception {
-        GreenHouseModel greenHouseModel = greenHouseRepository.findByOwnerId(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+    public GreenHouseDto getGreenHouseDashboard (String userId) {
+        GreenHouseModel greenHouseModel = greenHouseRepository.findByOwnerId(userId).orElseThrow(() -> new FindByException("Kunden inte hitta ett växthus som tillhör användaren"));
 
         List<PlantCrateModel> plantCrateModels = plantCrateRepository.findByGreenHouseId(greenHouseModel.getId());
         /* Make a list of all plantCrate ids */
