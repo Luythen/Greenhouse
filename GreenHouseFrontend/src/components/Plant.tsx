@@ -50,6 +50,12 @@ export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: strin
         }
     }
 
+    const displayPlantType = () => {
+        if (PlantTypes.some((pt) => pt.PlantType === activePlant?.plantType)) return PlantTypes.filter((pt) => pt.PlantType === activePlant?.plantType)[0].PlantName;
+
+        return "error"
+    }
+
     return (
         <div className="d-grid gap-2">
             { activePlant == null ? 
@@ -63,7 +69,7 @@ export const Plant = ({ crate, accessToken }: { crate: Crate, accessToken: strin
                 </div>
             </> : 
             <>
-                <button type="button" className="theme-success btn-subtle btn-lg rounded-0" data-bs-toggle="menu" aria-expanded="false">{ PlantTypes.filter((pt) => pt.PlantType === activePlant.plantType)[0].PlantName }</button>
+                <button type="button" className="theme-success btn-subtle btn-lg rounded-0" data-bs-toggle="menu" aria-expanded="false">{ displayPlantType() }</button>
                 <div className="menu">
                     <button className="menu-item theme-danger" type="button" onClick={handleRemovePlant}>Rensa</button>
                 </div>
