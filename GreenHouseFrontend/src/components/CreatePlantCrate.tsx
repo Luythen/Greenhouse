@@ -23,6 +23,13 @@ export const CreatePlantCrate = ({ accessToken, updateCrates }: { accessToken: s
         if (res.ok) {
             const data = await res.json() as Crate;
             updateCrates(data);
+            setLabel(null);
+            setSensor(null);
+
+            var _label = document.querySelector("#label") as HTMLInputElement;
+            var _sensor = document.querySelector("#sensor") as HTMLInputElement;
+            _label.value = "";
+            _sensor.value = "";
         }
     }
 
@@ -33,11 +40,11 @@ export const CreatePlantCrate = ({ accessToken, updateCrates }: { accessToken: s
                 <div className="card card-body">
                     <div className="form-field">
                         <label>Namn</label>
-                        <input type="text" className="form-control" onChange={(e) => setLabel(e.target.value)} />
+                        <input id="label" type="text" className="form-control" onChange={(e) => setLabel(e.target.value)} />
                     </div>
                     <div className="form-field">
                         <label>Sensor id</label>
-                        <input type="text" className="form-control" onChange={(e) => setSensor(e.target.value)} />
+                        <input id="sensor" type="text" className="form-control" onChange={(e) => setSensor(e.target.value)} />
                     </div>
                     <button className="theme-primary btn-subtle rounded-0" onClick={handleAddCrate}>Skapa</button>
                 </div>
