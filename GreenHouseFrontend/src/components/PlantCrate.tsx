@@ -50,7 +50,7 @@ export const PlantCrate = ({ crate, removeCrate, updateCrate, accessToken, soilD
     }
 
     return (
-        <div className="col">
+        <div className="col-4" style={{marginTop: "1rem"}}>
             <div className="card">
                 <div className="card-body">
                     { edit ? <div className="form-field">
