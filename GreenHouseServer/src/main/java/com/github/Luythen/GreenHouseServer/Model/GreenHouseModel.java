@@ -1,6 +1,7 @@
 package com.github.Luythen.GreenHouseServer.Model;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document 
@@ -8,6 +9,8 @@ public class GreenHouseModel {
     @Id
     private String id;
     private String name;
+
+    @Indexed(unique = true)
     private String ownerId;
     
     public String getId() {
