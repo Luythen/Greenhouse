@@ -28,24 +28,16 @@ public class PlantController {
 
     @PostMapping("/vegetable")
     public ResponseEntity<?> PlantNewVegetable (@RequestBody PlantVegetable plantVegetable) {
-        try {
-            PlantModel plantModel = plantService.plantVegetable(plantVegetable.crateId(), plantVegetable.plantType());
+        PlantModel plantModel = plantService.plantVegetable(plantVegetable.crateId(), plantVegetable.plantType());
 
-            return ResponseEntity.ok(plantModel);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400,e.getMessage()));
-        }
+        return ResponseEntity.ok(plantModel);
     }
 
     @PatchMapping("/unplant/{id}")
     public ResponseEntity<ResponseDto> removePlant (@PathVariable String id) {
-        try {
-            plantService.unPlant(id);
+        plantService.unPlant(id);
 
-            return ResponseEntity.ok(new ResponseDto(200, "Växt har blivit rensad"));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        return ResponseEntity.ok(new ResponseDto(200, "Växt har blivit rensad"));
     }
     
     

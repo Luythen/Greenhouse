@@ -35,32 +35,20 @@ public class PlantCrateController {
 
     @PostMapping("/add")
     public ResponseEntity<?> addPlantCrate (@AuthenticationPrincipal UserModel userModel, @RequestBody PlantCrateDto plantCrateDto) {
-        try {
-            PlantCrateModel plantCrateModel = plantCrateService.addNewPlantCrate(userModel.getId(), plantCrateDto.label(), plantCrateDto.sensorId());
+        PlantCrateModel plantCrateModel = plantCrateService.addNewPlantCrate(userModel.getId(), plantCrateDto.label(), plantCrateDto.sensorId());
             return ResponseEntity.ok().body(new GreenHouseCrateDto(plantCrateModel.getId(), plantCrateModel.getLabel(),plantCrateModel.getMoistureSensorConnectionId(), new ArrayList<PlantModel>()));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
     }
 
     @PostMapping("/remove/{id}")
     public ResponseEntity<ResponseDto> removePlantCrate (@AuthenticationPrincipal UserModel userModel, @PathVariable String id) {
-        try {
-            plantCrateService.removePlantCrateById(id, userModel.getId());
+        plantCrateService.removePlantCrateById(id, userModel.getId());
 
-            return ResponseEntity.ok(new ResponseDto(200, "Plantcrate have successfully been removed"));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        return ResponseEntity.ok(new ResponseDto(200, "Plantcrate have successfully been removed"));
     }
     
     @PutMapping("/edit/{id}")
     public ResponseEntity<?> updatePlantCrate (@AuthenticationPrincipal UserModel userModel, @PathVariable String id, @RequestBody PlantCrateDto pCrateDto) {
-        try {
-            return ResponseEntity.ok(plantCrateService.updatePlantCrate(pCrateDto, userModel.getId(), id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        return ResponseEntity.ok(plantCrateService.updatePlantCrate(pCrateDto, userModel.getId(), id));
     }
 
 }

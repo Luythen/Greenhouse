@@ -1,6 +1,8 @@
 package com.github.Luythen.GreenHouseServer.Controller;
 
 import com.github.Luythen.GreenHouseServer.Service.GreenHouseSerivce;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,50 +35,39 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login (@RequestBody LoginDto loginDto, HttpServletResponse response, HttpServletRequest request) {
-        try {
-            AuthDto authDto = authService.login(loginDto.email(), loginDto.password());
+        AuthDto authDto = authService.login(loginDto.email(), loginDto.password());
 
-            Cookie cookie = new Cookie("RefreshToken", authDto.refreshToken());
-            cookie.setMaxAge(432000);
-            cookie.setSecure(true);
-            cookie.setPath("/auth/refresh");
-            cookie.setHttpOnly(true);
-            cookie.setDomain(request.getServerName());
-            cookie.setAttribute("SameSite", "None");
+        Cookie cookie = new Cookie("RefreshToken", authDto.refreshToken());
+        cookie.setMaxAge(432000);
+        cookie.setSecure(true);
+        cookie.setPath("/auth/refresh");
+        cookie.setHttpOnly(true);
+        cookie.setDomain(request.getServerName());
+        cookie.setAttribute("SameSite", "None");
 
-            response.addCookie(cookie);
+        response.addCookie(cookie);
 
-            return ResponseEntity.status(200).body(authDto.loginResponseDto());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        return ResponseEntity.status(200).body(authDto.loginResponseDto());
     }
 
     @PostMapping("/register")
     public ResponseEntity<ResponseDto> register (@RequestBody RegisterDto registerDto) {
-        try {
-            UserModel user = authService.register(registerDto);
-            greenHouseSerivce.createNewGreenHouse(user.getId(), user.getFirstName());
+        UserModel user = authService.register(registerDto);
+        greenHouseSerivce.createNewGreenHouse(user.getId(), user.getFirstName());
 
-            return ResponseEntity.ok().body(new ResponseDto(200, "Registeration successfull"));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+        return ResponseEntity.ok().body(new ResponseDto(200, "Registeration successfull"));
     }
     
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh (@CookieValue("RefreshToken") String refreshToken) {
-        try {
-            return ResponseEntity.ok(authService.refresh(refreshToken));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(new ResponseDto(400, e.getMessage()));
-        }
+    public ResponseEntity<?> refresh (@CookieValue(value = "RefreshToken", required = false) String refreshToken) {
+        if (refreshToken == null || refreshToken.isBlank()) return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ResponseDto(401, "refreshtoken är tom")); 
+        return ResponseEntity.ok(authService.refresh(refreshToken));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<ResponseDto> logout (HttpServletResponse response, HttpServletRequest request) {
         Cookie cookie = new Cookie("RefreshToken", "LOL");
-        cookie.setMaxAge(10);
+        cookie.setMaxAge(1);
         cookie.setSecure(true);
         cookie.setPath("/auth/refresh");
         cookie.setHttpOnly(true);
