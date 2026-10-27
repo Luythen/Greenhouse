@@ -1,5 +1,5 @@
-const int AIR_VALUE = 510;
-const int WATER_VALUE = 250;
+const int AIR_VALUE[] = {505, 510};
+const int WATER_VALUE[] = {250, 250};
 
 const int PINS[] = {A0,A1};
 const int PIN_COUNT = sizeof(PINS) / sizeof(PINS[0]);
@@ -18,7 +18,7 @@ JsonDocument readMoistureSensor () {
       delay(LOOP_DELAY);
     }
     int raw = sum / 10;
-    int percent = map(raw, AIR_VALUE, WATER_VALUE, 0, 100);
+    int percent = map(raw, AIR_VALUE[i], WATER_VALUE[i], 0, 100);
     percent = constrain(percent, 0, 100);
 
     doc[i]["sensorId"] = PINS[i];
