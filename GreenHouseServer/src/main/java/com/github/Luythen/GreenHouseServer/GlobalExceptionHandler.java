@@ -4,12 +4,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException.NotFound;
 
 import com.github.Luythen.GreenHouseServer.Dto.ResponseDto;
 import com.github.Luythen.GreenHouseServer.Exceptions.EmailAlreadyExistsException;
 import com.github.Luythen.GreenHouseServer.Exceptions.FindByException;
 import com.github.Luythen.GreenHouseServer.Exceptions.GreenHouseAlreadyExitsException;
+import com.github.Luythen.GreenHouseServer.Exceptions.InvalidAccessException;
 import com.github.Luythen.GreenHouseServer.Exceptions.InvalidFieldException;
 import com.github.Luythen.GreenHouseServer.Exceptions.InvalidRefreshToken;
 import com.github.Luythen.GreenHouseServer.Exceptions.PasswordNotMatchException;
@@ -54,9 +54,9 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseDto(401, e.getMessage()));
     }
 
-    @ExceptionHandler(NotFound.class)
-    ResponseEntity<ResponseDto> notFound (RuntimeException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ResponseDto(400, e.getMessage()));
+    @ExceptionHandler(InvalidAccessException.class)
+    ResponseEntity<ResponseDto> invalidAccess (RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ResponseDto(401, e.getMessage()));
     }
 
 }
