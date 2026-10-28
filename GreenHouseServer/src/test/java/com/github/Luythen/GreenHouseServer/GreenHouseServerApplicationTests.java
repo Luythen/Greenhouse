@@ -160,10 +160,10 @@ class GreenHouseServerApplicationTests {
 
 			PlantCrateModel plantCrateModel = plantCrateService.addNewPlantCrate(userModel.getId(),"Låda 1", null);
 
-			plantService.plantVegetable(plantCrateModel.getId(),"Cucumber");
+			plantService.plantVegetable(plantCrateModel.getId(),"Cucumber", userModel.getId());
 
 			assertThrows(PlantCrateHasActivePlantException.class, () -> {
-				plantService.plantVegetable(plantCrateModel.getId(),"Cucumber");
+				plantService.plantVegetable(plantCrateModel.getId(),"Cucumber", userModel.getId());
 			});
 
 
