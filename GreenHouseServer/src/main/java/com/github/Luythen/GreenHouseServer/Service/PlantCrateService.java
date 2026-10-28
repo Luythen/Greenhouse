@@ -3,7 +3,7 @@ package com.github.Luythen.GreenHouseServer.Service;
 import com.github.Luythen.GreenHouseServer.Dto.GreenHouseCrateDto;
 import com.github.Luythen.GreenHouseServer.Dto.PlantCrateDto;
 import com.github.Luythen.GreenHouseServer.Exceptions.FindByException;
-import com.github.Luythen.GreenHouseServer.Exceptions.NotFoundException;
+import com.github.Luythen.GreenHouseServer.Exceptions.InvalidAccessException;
 import com.github.Luythen.GreenHouseServer.Model.GreenHouseModel;
 import com.github.Luythen.GreenHouseServer.Model.PlantCrateModel;
 import com.github.Luythen.GreenHouseServer.Repository.PlantCrateRepository;
@@ -38,7 +38,7 @@ public class PlantCrateService {
     public void removePlantCrateById (String id, String userId) {
         PlantCrateModel plantCrateModel = plantCrateRepository.findById(id).orElseThrow(() -> new FindByException("Kunde inte hitta någon låda med den idn"));
         String greenHouseId = greenHouseSerivce.findGreenHouseByOwnerId(userId).getId();
-        if (!plantCrateModel.getGreenHouseId().equals(greenHouseId)) throw new NotFoundException("Lådan tillhör ej växthuset\"");
+        if (!plantCrateModel.getGreenHouseId().equals(greenHouseId)) throw new InvalidAccessException("Lådan tillhör ej växthuset");
 
         plantCrateRepository.delete(plantCrateModel);
     }
@@ -47,7 +47,7 @@ public class PlantCrateService {
         PlantCrateModel plantCrateModel = plantCrateRepository.findById(id).orElseThrow(() -> new FindByException("Kunde inte hitta någon låda med den idn"));
         GreenHouseModel greenHouseModel = greenHouseSerivce.findGreenHouseByOwnerId(userId);
             
-        if (!plantCrateModel.getGreenHouseId().equals(greenHouseModel.getId())) throw new NotFoundException("Lådan tillhör ej växthuset");
+        if (!plantCrateModel.getGreenHouseId().equals(greenHouseModel.getId())) throw new InvalidAccessException("Lådan tillhör ej växthuset");
 
         plantCrateModel.setLabel(plantCrateDto.label());
         plantCrateModel.setMoistureSensorConnectionId(plantCrateDto.sensorId());
