@@ -6,6 +6,73 @@ Easy way to manage your greenhouse while also begin able to see youre how moist 
 ### AI Usage
 I have use claude AI to troubleshoot my code when it crashes if i can't find the problem and this means that i paste the error stack trace into claude
 
+### Known bug
+* Sometimes the websocket connect before the `POST` /greenhouse/dashboard finsihed so the websocket will subscribe to null but on refresh it work fine
+* Arduino have only been tested to send data to the deployed version which means it probably wont work locally (not tested)
+
+### Good to know
+* When you set the crate sensor Id not write A0 beacuse A0 is not a correct id and the same goes for the other analog ids.
+```
+A0 = 14
+A1 = 15
+A2 = 16
+A3 = 17
+A4 = 18
+A5 = 19
+```
+
+### Whats next
+* Add a more detail plant history for the crate
+* Add the possibility to display greenhouse temperature
+* Add stronger password requirements
+* Add the possibility to change the namn of the greenhouse
+
+# Arduino
+### Technical stack
+* Arduino uno rev4
+* [Capaitive Soil Moisture Sensor v1.2](https://www.amazon.se/dp/B08GCRZVSR?ref=ppx_yo2ov_dt_b_fed_asin_title)
+* Wires
+* Breadboard
+
+## Configuration
+Copy this and create a file named settings.h
+```
+#define SECERT_SSID "--wifi--"
+#define SECERT_PASSWORD "--password--"
+#define SECRET_API_KEY "--api-key--"
+#define SECRET_SERVER_IP "--server-ip---"
+#define PORT 443
+```
+
+Air and water value most be calibrated to your soil moisture sensor and you must also declare which analog pins you are using for youre sensors. <br />
+You will find this in the moisture.h file.
+```
+const int AIR_VALUE[] = {505, 510};
+const int WATER_VALUE[] = {250, 250};
+
+const int PINS[] = {A0, A1};
+```
+
+# Frontend
+### Technical stack
+* Vite
+* React
+* Sockjs
+* [Nodejs](https://nodejs.org/en)
+  
+## Configuration
+```
+VITE_API_URL=--server-url--
+```
+
+## Get started
+* First clone the project
+* Then renamed .env.example to .env
+* Change the `VITE_API_URL` to the server url
+* Then open a `cmd` in the GreenHouseFrontend folder
+* Then run `npm install`
+* Then run `npm run dev`
+
 # Server
 ## Technical stack
 * Spring boot 4.1.1
@@ -16,19 +83,24 @@ I have use claude AI to troubleshoot my code when it crashes if i can't find the
 
 ## Configuration
 You can find these fillable field in the .env.example <br />
-And for extra security don't not have the samme access token secret as the refresh token secret and also use a random UUID for your jwt token
+And for extra security don't not have the samme access token secret as the refresh token secret and also use a random UUID for your jwt token. <br />
+JWT token Issuer can be whatever.
 ```
 ACCESS_TOKEN_SECRET_KEY=--Access-Token--
 REFRESH_TOKEN_SECRET_KEY=--Refresh-Token--
 JWT_TOKEN_ISSUER=--Token-Issur--
-MONGO_URI=--Mongo_uri--
+MONGO_URI=--Mongo_db_connection_string--
 ALLOWED_ORIGIN=--Frontend-url---
 ```
 
 ## Get started
-* First clone the project
-* Then fill in the .env.example file
-* Then either open a `cmd` or VS Code and then type `./mvnw spring-boot:run` or click on the green play button
+* First clone the project (if you have not done it yet)
+* Then renamed the .env.example to .env and fill in the fields
+* Then change `--Access-Token--` to a random uuid
+* Then change `--Refresh-Token--` to a random uuid not the same as access token
+* Then change `--Mongo_db_connection_string--` to your mongodb connection string
+* Then change `--Frontend-url---` to the url for the frontend
+* Then either open a `cmd` or VS Code and then type `./mvnw spring-boot:run` or click on the play button
 
 ## User endpoints
 ### Auth
@@ -37,7 +109,7 @@ ALLOWED_ORIGIN=--Frontend-url---
      ```
        {
          Statuscode: 200,
-         message: "E-postadressen är ej giltig" // Email is invalid
+         message: "Registreringen lyckades" // Registration successful
        }
      ```
      ```
