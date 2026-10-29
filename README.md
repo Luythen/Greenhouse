@@ -28,7 +28,7 @@ ALLOWED_ORIGIN=--Frontend-url---
 ## Get started
 * First clone the project
 * Then fill in the .env.example file
-* Then either open a `cmd` or VS Code and then type `./mvnw spring-boot:run` or click on the green play button
+* Then either open a `cmd` or VS Code and then type `./mvnw spring-boot:run` or click on the play button
 
 ## User endpoints
 ### Auth
