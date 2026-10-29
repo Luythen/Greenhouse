@@ -37,7 +37,7 @@ public class SoilMoistureController {
         List<SoilMoistureModel> sList = soilMoistureService.addNewSoilMoistureMeasurement(id, measurementDto);
         simpMessagingTemplate.convertAndSend("/topic/soil/" + id , sList);
 
-        return ResponseEntity.ok(new ResponseDto(200, "Moist measurement have been registerd"));
+        return ResponseEntity.ok(new ResponseDto(200, "Fuktmätningar har registrerats"));
     }
 
 }
