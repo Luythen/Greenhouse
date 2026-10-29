@@ -21,6 +21,12 @@ A4 = 18
 A5 = 19
 ```
 
+### Whats next
+* Add a more detail plant history for the crate
+* Add the possibility to display greenhouse temperature
+* Add stronger password requirements
+* Add the possibility to change the namn of the greenhouse
+
 # Arduino
 ### Technical stack
 * Arduino uno rev4
