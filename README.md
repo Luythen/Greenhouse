@@ -62,7 +62,7 @@ VITE_API_URL=--server-url--
 ## Get started
 * First clone the project
 * Then renamed .env.example to .env
-* Change the ``VITE_API_URL` to the server url
+* Change the `VITE_API_URL` to the server url
 * Then open a `cmd` in the GreenHouseFrontend folder
 * Then run `npm install`
 * Then run `npm run dev`
