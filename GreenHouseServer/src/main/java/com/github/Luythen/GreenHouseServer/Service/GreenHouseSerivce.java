@@ -49,11 +49,11 @@ public class GreenHouseSerivce {
     }
 
     public GreenHouseModel findGreenHouseByOwnerId (String id) {
-        return greenHouseRepository.findByOwnerId(id).orElseThrow(() -> new FindByException("Kunden inte hitta ett växthus som tillhör användaren"));
+        return greenHouseRepository.findByOwnerId(id).orElseThrow(() -> new FindByException("Kunde inte hitta ett växthus som tillhör användaren"));
     }
 
     public GreenHouseDto getGreenHouseDashboard (String userId) {
-        GreenHouseModel greenHouseModel = greenHouseRepository.findByOwnerId(userId).orElseThrow(() -> new FindByException("Kunden inte hitta ett växthus som tillhör användaren"));
+        GreenHouseModel greenHouseModel = greenHouseRepository.findByOwnerId(userId).orElseThrow(() -> new FindByException("Kunde inte hitta ett växthus som tillhör användaren"));
 
         List<PlantCrateModel> plantCrateModels = plantCrateRepository.findByGreenHouseId(greenHouseModel.getId());
         /* Make a list of all plantCrate ids */
@@ -65,7 +65,7 @@ public class GreenHouseSerivce {
         for (String id : ids) {
             plants.put(id, plantRepository.findByPlantCrateId(id));
         }
-
+        
         /* map through all of the plantCrates and in order to create the crateDto with relevant information and also any plants that is connected to the crate */
         List<GreenHouseCrateDto> crates = plantCrateModels.stream().map(pcm -> 
             new GreenHouseCrateDto(pcm.getId(), 

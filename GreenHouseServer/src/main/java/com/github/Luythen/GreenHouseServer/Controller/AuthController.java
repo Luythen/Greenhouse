@@ -55,7 +55,7 @@ public class AuthController {
         UserModel user = authService.register(registerDto);
         greenHouseSerivce.createNewGreenHouse(user.getId(), user.getFirstName());
 
-        return ResponseEntity.ok().body(new ResponseDto(200, "Registeration successfull"));
+        return ResponseEntity.ok().body(new ResponseDto(200, "Registreringen lyckades"));
     }
     
     @PostMapping("/refresh")

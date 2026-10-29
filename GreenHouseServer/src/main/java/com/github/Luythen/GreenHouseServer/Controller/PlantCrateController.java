@@ -43,7 +43,7 @@ public class PlantCrateController {
     public ResponseEntity<ResponseDto> removePlantCrate (@AuthenticationPrincipal UserModel userModel, @PathVariable String id) {
         plantCrateService.removePlantCrateById(id, userModel.getId());
 
-        return ResponseEntity.ok(new ResponseDto(200, "Plantcrate have successfully been removed"));
+        return ResponseEntity.ok(new ResponseDto(200, "Lådan har blivit bort tagen"));
     }
     
     @PutMapping("/edit/{id}")

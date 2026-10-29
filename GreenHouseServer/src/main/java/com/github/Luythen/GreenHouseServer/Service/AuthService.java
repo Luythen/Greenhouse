@@ -33,7 +33,12 @@ public class AuthService {
     }
 
     public AuthDto login (String email, String password) {
-        UserModel userModel = (UserModel) userDetailServiceImpl.loadUserByUsername(email);
+        UserModel userModel;
+        try {
+            userModel = (UserModel) userDetailServiceImpl.loadUserByUsername(email);
+        } catch (Exception e) {
+            throw new InvalidFieldException("E-postadressen är ej giltig");
+        }
 
         if (!passwordEncoder.matches(password, userModel.getPassword())) throw new PasswordNotMatchException("Lösenord matchar inte");
 
