@@ -49,11 +49,11 @@ public class GreenHouseSerivce {
     }
 
     public GreenHouseModel findGreenHouseByOwnerId (String id) {
-        return greenHouseRepository.findByOwnerId(id).orElseThrow(() -> new FindByException("Kunden inte hitta ett växthus som tillhör användaren"));
+        return greenHouseRepository.findByOwnerId(id).orElseThrow(() -> new FindByException("Kunde inte hitta ett växthus som tillhör användaren"));
     }
 
     public GreenHouseDto getGreenHouseDashboard (String userId) {
-        GreenHouseModel greenHouseModel = greenHouseRepository.findByOwnerId(userId).orElseThrow(() -> new FindByException("Kunden inte hitta ett växthus som tillhör användaren"));
+        GreenHouseModel greenHouseModel = greenHouseRepository.findByOwnerId(userId).orElseThrow(() -> new FindByException("Kunde inte hitta ett växthus som tillhör användaren"));
 
         List<PlantCrateModel> plantCrateModels = plantCrateRepository.findByGreenHouseId(greenHouseModel.getId());
         /* Make a list of all plantCrate ids */
