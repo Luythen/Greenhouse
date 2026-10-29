@@ -65,7 +65,7 @@ public class GreenHouseSerivce {
         for (String id : ids) {
             plants.put(id, plantRepository.findByPlantCrateId(id));
         }
-
+        
         /* map through all of the plantCrates and in order to create the crateDto with relevant information and also any plants that is connected to the crate */
         List<GreenHouseCrateDto> crates = plantCrateModels.stream().map(pcm -> 
             new GreenHouseCrateDto(pcm.getId(), 
