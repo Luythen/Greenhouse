@@ -37,7 +37,7 @@ ALLOWED_ORIGIN=--Frontend-url---
      ```
        {
          Statuscode: 200,
-         message: "E-postadressen är ej giltig" // Email is invalid
+         message: "Registreringen lyckades" // Registration successful
        }
      ```
      ```
