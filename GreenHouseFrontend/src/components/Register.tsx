@@ -6,6 +6,7 @@ export const Register = () => {
     const [lastName, setLastName] = useState<string |null>(null);
     const [email, setEmail] = useState<string |null>(null);
     const [password, setPassword] = useState<string |null>(null);
+    const [res, setRes] = useState<string | null>(null);
 
     const api = import.meta.env.VITE_API_URL ?? "";
     
@@ -27,11 +28,12 @@ export const Register = () => {
 
             if (res.ok) {
                 const data = await res.json();
-                console.log(data)
+                console.log(data.message)
+                setRes(data.message)
             }
 
         } finally {
-            
+            setLoading(false)
         }
     }
 
@@ -39,6 +41,7 @@ export const Register = () => {
         <div className="container">
             { loading ? <div>loading</div> : 
             <div className="card" style={{marginLeft: "11.5rem", marginRight: "11.5rem", marginTop: "2rem"}}>
+                <p className="text-center">{ res }</p>
                 <div className="card-body">
                     <div className="form-field">
                         <label>Förnamn</label>
