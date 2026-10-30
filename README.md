@@ -8,7 +8,7 @@ Easy way to manage your greenhouse while also begin able to see youre how moist 
 [Frontend](https://greenhousefrontend-lnnyg.ondigitalocean.app/)
 
 ### AI Usage
-I have use claude AI to troubleshoot my code when it crashes and if i can't find the problem then i will paste the error stack trace into claude and it will explain what the problem was. <br />And i have save alot of time using claude in this maner because otherwies you could have spent even more time which i did not have alot of.
+I have use claude AI to troubleshoot my code when it crashes and if i can't find the problem then i will paste the error stack trace into claude and it will explain what the problem was. <br />And i have save alot of time using claude in this maner because otherwise you could have spent even more time which i did not have alot of.
 
 ### Known bug
 * Sometimes the websocket connect before the `POST` /greenhouse/dashboard finsihed so the websocket will subscribe to null but on refresh it work fine
