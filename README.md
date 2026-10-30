@@ -3,6 +3,10 @@
 ### Project descripton
 Easy way to manage your greenhouse while also begin able to see youre how moist youre soil is so you can know when you need to water youre plants
 
+### Deployed urls
+[Backend](https://greenhouseserver-gkin4.ondigitalocean.app/) <br />
+[Frontend](https://greenhousefrontend-lnnyg.ondigitalocean.app/)
+
 ### AI Usage
 I have use claude AI to troubleshoot my code when it crashes if i can't find the problem and this means that i paste the error stack trace into claude
 
